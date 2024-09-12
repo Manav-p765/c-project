@@ -8,29 +8,44 @@ typedef struct student
     char name[10];
 } student;
 
-void display(student s)
+void dataentry(student s[])
 {
-    printf("name = %s, roll no. = %d, percentage = %f, \n", s.name, s.no, s.per);
+    for (int i = 0; i < 5; i++)
+    {
 
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     printf("name = %s, roll no. = %d, percentage = %f, \n",s[i].name,s[i].no,s[i].per);
-    // }
+        printf("enter your name\n");
+        scanf("%s", &s[i].name);
+        printf("enter your roll no\n");
+        scanf("%d", &s[i].no);
+        printf("enter your percentage\n");
+        scanf("%f", &s[i].per);
+    }
+}
+
+void search(student s[], int rollno)
+{
+    int num = 0;
+    for (int i = 0; i < 5; i++)
+    {
+        if (rollno = s[i].no)
+        {
+            num = i;
+        }
+    }
+    printf("name = %s, roll no. = %d, percentage = %.2f, \n", s[num].name, s[num].no, s[num].per);
 }
 
 int main()
 {
     student s[5];
-    for (int i = 0; i < 5; i++)
-    {
+    int n;
+    dataentry(s);
 
-        printf("enter your name");
-        scanf("%s", &s[i].name);
-        printf("enter your roll no");
-        scanf("%d", &s[i].no);
-        printf("enter your percentage ");
-        scanf("%f", &s[i].per);
-    }
+    int rollno;
+    printf("enter your roll no\n");
+    scanf("%d", rollno);
+
+    search(s, rollno);
 
     return 0;
 }
