@@ -10,7 +10,9 @@ typedef struct student
 
 void dataentry(student s[])
 {
-    for (int i = 0; i < 5; i++)
+    FILE *ptr;
+    ptr = fopen("studentdata.txt", "a");
+    for (int i = 0; i < 1; i++)
     {
 
         printf("enter your name\n");
@@ -19,33 +21,49 @@ void dataentry(student s[])
         scanf("%d", &s[i].no);
         printf("enter your percentage\n");
         scanf("%f", &s[i].per);
+
+        fprintf(ptr, "%s", s[i].name);
+        fprintf(ptr, "%s", ",");
+        fprintf(ptr, "%d", s[i].no);
+        fprintf(ptr, "%s", ",");
+        fprintf(ptr, "%.2f\n", s[i].per);
+        // fprintf(ptr, "%c", "\n");
     }
+    fclose(ptr);
 }
 
-void search(student s[], int rollno)
+int search(student s[], int rollno, int num)
 {
-    int num = 0;
-    for (int i = 0; i < 5; i++)
+    FILE *ptr1;
+
+    ptr1 = fopen("studentdata.txt", "r");
+    for (int i = 0; i < 20; i++)
     {
-        if (rollno = s[i].no)
+        fscanf(ptr1, "%d", s[i].no);
+        if (rollno == s[i].no)
         {
-            num = i;
+            return num = i - 1;
         }
     }
-    printf("name = %s, roll no. = %d, percentage = %.2f, \n", s[num].name, s[num].no, s[num].per);
+
+    fclose(ptr1);
 }
 
 int main()
 {
-    student s[5];
+    student s[50];
     int n;
+    int num = 0;
+
     dataentry(s);
 
     int rollno;
     printf("enter your roll no\n");
     scanf("%d", rollno);
 
-    search(s, rollno);
+    search(s, rollno, num);
+
+    printf("name = %s, roll no. = %d, percentage = %.2f, \n", s[num].name, s[num].no, s[num].per);
 
     return 0;
 }
