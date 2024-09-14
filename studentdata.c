@@ -30,40 +30,56 @@ void dataentry(student s[])
         // fprintf(ptr, "%c", "\n");
     }
     fclose(ptr);
+    printf("your data has been stored");
 }
 
-int search(student s[], int rollno, int num)
+void search(student s[], int rollno)
 {
-    FILE *ptr1;
+    FILE *ptr;
 
-    ptr1 = fopen("studentdata.txt", "r");
+    ptr = fopen("studentdata.txt", "r");
     for (int i = 0; i < 20; i++)
     {
-        fscanf(ptr1, "%d", s[i].no);
+        fscanf(ptr, "%[^,],%d,%f\n", s[i].name, &s[i].no, &s[i].per);
         if (rollno == s[i].no)
         {
-            return num = i - 1;
+            printf("name = %s, roll no. = %d, percentage = %.2f, \n", s[i].name, s[i].no, s[i].per);
         }
     }
 
-    fclose(ptr1);
+    fclose(ptr);
 }
 
 int main()
 {
     student s[50];
     int n;
-    int num = 0;
-
-    dataentry(s);
-
+    char input[20];
     int rollno;
-    printf("enter your roll no\n");
-    scanf("%d", rollno);
 
-    search(s, rollno, num);
+    printf("type 'dataentry' to enter new student data\n");
+    printf("or\n");
+    printf("type 'search' to search student data\n");
 
-    printf("name = %s, roll no. = %d, percentage = %.2f, \n", s[num].name, s[num].no, s[num].per);
+    scanf("%s", input);
+
+    size_t len = strlen(input);
+    if (len > 0 && input[len - 1] == '\n')
+    {
+        input[len - 1] = '\0';
+    }
+
+    if (strcmp(input, "dataentry") == 0)
+    {
+        dataentry(s);
+    }
+    else if (strcmp(input, "search") == 0)
+    {
+        printf("enter the roll number of the student\n");
+        scanf("%d", &rollno);
+
+        search(s, rollno);
+    }
 
     return 0;
 }
