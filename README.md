@@ -1,1 +1,1 @@
-This are mhy c language projects while learning it.
+This are my c language projects while learning it.
