@@ -15,11 +15,11 @@ void dataentry(student s[])
     for (int i = 0; i < 1; i++)
     {
 
-        printf("enter your name\n");
+        printf("enter student name\n");
         scanf("%s", &s[i].name);
-        printf("enter your roll no\n");
+        printf("enter student roll no\n");
         scanf("%d", &s[i].no);
-        printf("enter your percentage\n");
+        printf("enter student percentage\n");
         scanf("%f", &s[i].per);
 
         fprintf(ptr, "%s", s[i].name);
@@ -30,14 +30,18 @@ void dataentry(student s[])
         // fprintf(ptr, "%c", "\n");
     }
     fclose(ptr);
-    printf("your data has been stored");
 }
 
-void search(student s[], int rollno)
+void search(student s[])
 {
     FILE *ptr;
+    int rollno;
 
     ptr = fopen("studentdata.txt", "r");
+
+    printf("enter the roll number of the student\n");
+    scanf("%d", &rollno);
+
     for (int i = 0; i < 20; i++)
     {
         fscanf(ptr, "%[^,],%d,%f\n", s[i].name, &s[i].no, &s[i].per);
@@ -55,31 +59,73 @@ int main()
     student s[50];
     int n;
     char input[20];
-    int rollno;
+    int command = -1;
+    char input1[20];
 
-    printf("type 'dataentry' to enter new student data\n");
-    printf("or\n");
-    printf("type 'search' to search student data\n");
-
-    scanf("%s", input);
-
-    size_t len = strlen(input);
-    if (len > 0 && input[len - 1] == '\n')
+    while (1)
     {
-        input[len - 1] = '\0';
-    }
+        printf("Enter command (dataentry, search, or exit):\n ");
+        fgets(input, sizeof(input), stdin);
 
-    if (strcmp(input, "dataentry") == 0)
-    {
-        dataentry(s);
-    }
-    else if (strcmp(input, "search") == 0)
-    {
-        printf("enter the roll number of the student\n");
-        scanf("%d", &rollno);
+        size_t len = strlen(input);
+        if (len > 0 && input[len - 1] == '\n')
+        {
+            input[len - 1] = '\0';
+        }
 
-        search(s, rollno);
-    }
+        if (strcmp(input, "dataentry") == 0)
+        {
+            command = 1;
+        }
+        else if (strcmp(input, "search") == 0)
+        {
+            command = 2;
+        }
+        else if (strcmp(input, "exit") == 0)
+        {
+            command = 0;
+        }
 
+        switch (command)
+        {
+        case 1:
+
+            while (1)
+            {
+                dataentry(s);
+                printf("enter 'save' to save data or press enter to add another student\n");
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF)
+                    ;
+                fgets(input1, sizeof(input1), stdin);
+
+                size_t len = strlen(input1);
+                if (len > 0 && input1[len - 1] == '\n')
+                {
+                    input1[len - 1] = '\0';
+                }
+                if ((strcmp(input1, "save") == 0))
+                {
+                    break;
+                }
+                else
+                {
+                    printf("next student\n");
+                }
+            }
+            break;
+
+        case 2:
+            search(s);
+            break;
+        case 0:
+            printf("Exiting the program.\n");
+            return 0;
+
+        default:
+            printf("Invalid command. Please try again.\n");
+            break;
+        }
+    }
     return 0;
 }
